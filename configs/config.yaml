@@ -1,0 +1,42 @@
+data:
+  topics_file: "data/topics.csv"
+  opinions_file: "data/opinions.csv"
+  conclusions_file: "data/conclusions.csv"
+
+models:
+  embedding:
+    name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    max_seq_length: 256
+    batch_size: 32
+  
+  topic_matching:
+    similarity_threshold: 0.70
+    top_k: 3
+    method: "cosine"
+  
+  position_classifier:
+    model_type: "distilbert"
+    num_labels: 4
+    max_length: 128
+    learning_rate: 3e-5
+    epochs: 1
+    batch_size: 128
+    test_size: 0.2
+    random_state: 42
+
+qdrant:
+  host: "localhost"
+  port: 6333
+  grpc_port: 6334
+  collection_name: "opinion_embeddings"
+  vector_size: 384
+  distance: "Cosine"
+  timeout: 10
+
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
+  max_bytes: 10485760
+  backup_count: 5

@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package opinion_analyzer;
+
+service OpinionAnalyzer {
+    rpc SubmitOpinion(OpinionRequest) returns (OpinionResponse);
+    
+    rpc SubmitOpinionBatch(OpinionBatchRequest) returns (OpinionBatchResponse);
+    
+    rpc GetResults(ResultsRequest) returns (ResultsResponse);
+    
+    rpc GetConclusion(ConclusionRequest) returns (ConclusionResponse);
+    
+    rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+message OpinionRequest {
+    string opinion_id = 1;
+    string text = 2;
+    string user_id = 3;
+    int64 timestamp = 4;
+}
+
+message OpinionBatchRequest {
+    repeated OpinionRequest opinions = 1;
+}
+
+message ResultsRequest {
+    string opinion_id = 1;
+}
+
+message ConclusionRequest {
+    string topic_id = 1;
+}
+
+message HealthRequest {
+    string service = 1;
+}
+
+// Response Messages
+message OpinionResponse {
+    string opinion_id = 1;
+    string matched_topic_id = 2;
+    float topic_similarity = 3;
+    string predicted_position = 4;
+    float position_confidence = 5;
+    string status = 6;
+    string message = 7;
+}
+
+message OpinionBatchResponse {
+    repeated OpinionResponse results = 1;
+    int32 total_processed = 2;
+    int32 successful = 3;
+    int32 failed = 4;
+}
+
+message ResultsResponse {
+    string opinion_id = 1;
+    string matched_topic_id = 2;
+    string topic_text = 3;
+    float topic_similarity = 4;
+    string predicted_position = 5;
+    float position_confidence = 6;
+    string conclusion = 7;
+    bool is_processed = 8;
+}
+
+message ConclusionResponse {
+    string topic_id = 1;
+    string topic_text = 2;
+    string conclusion = 3;
+    int32 total_opinions = 4;
+    map<string, int32> position_distribution = 5;
+    float avg_confidence = 6;
+}
+
+message HealthResponse {
+    string status = 1;
+    string version = 2;
+    int64 uptime_seconds = 3;
+    map<string, string> services = 4;
+}
