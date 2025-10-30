@@ -27,7 +27,7 @@ class ConclusionGenerator:
         topic_analysis = {}        
         for topic_id in opinions_df['matched_topic_id'].unique():
             topic_opinions = opinions_df[
-                opinions_df['matched_topic_id'] == "topic_id"
+                opinions_df['topic_id'] == topic_id
             ]
             
             position_counts = topic_opinions['predicted_type'].value_counts()
@@ -166,4 +166,4 @@ if __name__ == "__main__":
 
     a = generator.generate_conclusions(
         opinions_df=opinions_df,
-        topics_df=topics_df)
+        topics_df=topics_df.iloc[:15])
